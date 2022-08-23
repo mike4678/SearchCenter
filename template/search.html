@@ -1,0 +1,137 @@
+<script type="text/javascript">
+	$(document).ready(function(){
+		$("#login_sub").click(function(){
+			$("#query").attr("action", "search.php").submit();
+		});
+	});
+	
+	/*回车事件*/
+	function EnterPress(e){ //传入 event 
+		var e = e || window.event; 
+		if(e.keyCode == 13){ 
+			$("#query").attr("action", "search.php").submit();
+		} 
+	} 
+</script>
+<!--顶部结束-->
+<!--搜索主体-->
+<head>
+<br><br><br><br><br><br>
+<div class="content">
+		<p style="text-align:center"><img src="images/baidulogo.png"  alt="" width="297" height="142" class="logo" /></p><br>
+        <ul class="input-group" style="display:inline;text-align:center" >
+          <input name="search" type="text" id="search" class="form-control" style="height:38px;width:40%;margin-left:20%"/>
+		  <select name="search_fs" id="search_fs" class="form-control" style="height:38px;width:15%;">
+           <option value="" selected="selected">Select Search Type</option>
+		   <option value="mac">MAC-address</option>
+		   <option value="ip" >ip-address</option>
+		   <option value="process" >进程信息</option>
+		   <option value="hz" >后缀名</option>
+          </select>
+          <input name="button" type="button" class="btn btn-bordered waves-effect waves-light form-control"  id="button"  onclick="javascript:Search();" value="搜一下" style="height:38px;width:10%;display:inline-block;"/>
+</ul>
+</div>
+<br>
+	<div id="glassblack" class="glass" style="margin:0 auto;border:0px solid #000;width:400px;height:200px;">
+	</div>
+	<div id="glass" class="glass" style="margin:0 auto;border:0px solid #000;width:400px;height:200px;display:none">
+	<br> <div id="USERMAC" style="margin-left: 20px;" > </div>
+	</br> <div id="MACqianzui" style="margin-left: 20px;"> </div>
+	</br> <div id="REGKEYWORD" style="margin-left: 20px;"> </div>
+	</div>
+	<div id="glass1" class="glass" style="margin:0 auto;border:0px solid #000;width:400px;height:200px;display:none">
+	<br> <div id="FileName" style="margin-left: 20px;" > </div>
+	</br> <div id="FilePath" style="margin-left: 20px;"> </div>
+	</br> <div id="Compy" style="margin-left: 20px;"> </div>
+	</br> <div id="Level" style="margin-left: 20px;"> </div>
+	</br> <div id="Other" style="margin-left: 20px;"> </div>
+	</div> 
+<br> 
+<script>
+$("#login_boder").bind("keydown", function(e) {
+    var theEvent = e || window.event;
+    var code = theEvent.keyCode || theEvent.which || theEvent.charCode;
+    if (code == 13) {
+        $(".submit").click()
+    }
+});
+
+function Search() {
+        event.preventDefault();
+        var search = $('#search').val();
+		var search_fs = $('#search_fs').val();
+		if (search_fs == '') {
+            SystemBox(3, '搜索类型为空！');
+            return false
+        }
+        if (search == '') {
+            SystemBox(3, '搜索的内容为空！');
+            return false
+        }
+        $.ajax({
+            url: 'search.php',
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                searchdata: search,
+				searchfs: search_fs
+            },
+            beforeSend: function() {
+                $('#button').attr("value", '正在搜索...')
+            },
+            success: function(res) {
+                var errcode = res.status;
+                var errmessage = res.message;
+				switch(res.status)
+				{
+					case '0':
+						$("#USERMAC").text(" 查询MAC地址：" + res.mac);
+						$("#MACqianzui").text(" MAC地址前缀：" + res.mac_q);
+						$("#REGKEYWORD").text(" 注册公司：" + res.regcompy);
+						//$("#COMPADDR").text(" 公司地址：" + res.compaddr)
+						$('#glassblack').attr("style", 'display:none');
+						$('#glass1').attr("style", 'display:none');
+						$('#glass').attr("style", 'margin:0 auto;border:0px solid #000;width:400px;height:200px;display:block');
+						$('#button').attr("value", '搜一下');
+					break;
+					
+					case '1':
+						$("#USERMAC").text(" 启始IP：" + res.Data.beginIP);
+						$("#MACqianzui").text(" 结束IP：" + res.Data.endIP);
+						$("#REGKEYWORD").text(" 归属地：" + res.Data.dataA + res.Data.dataB);
+						//$("#COMPADDR").text(" 公司地址：" + res.compaddr);
+						$('#glassblack').attr("style", 'display:none');
+						$('#glass1').attr("style", 'display:none');						
+						$('#glass').attr("style", 'margin:0 auto;border:0px solid #000;width:400px;height:200px;display:block');
+						$('#button').attr("value", '搜一下');
+					break;
+
+					case '2':
+						$("#FileName").text(" 查询文件名：" + res.p_name)
+						$("#FilePath").text(" 文件路径：" + res.p_path)
+						$("#Compy").text(" 开发公司：" + res.regcompy)
+						$("#Level").text(" 安全等级：" + res.p_level)
+						$("#Other").text(" 相关说明：" + res.p_other)
+						$('#glass1').attr("style", 'margin:0 auto;border:0px solid #000;width:400px;height:200px;display:block');
+						$('#glassblack').attr("style", 'display:none');
+						$('#glass').attr("style", 'display:none');						
+						$('#button').attr("value", '搜一下')
+					break;
+					
+					case '3':
+						SystemBox(2, 'template/process/list.php',null,'请选择需要查询的进程名',300,500);
+						$('#button').attr("value", '搜一下')	
+					break;
+					
+					default:
+						SystemBox(3, errmessage);
+						$('#button').attr("value", '搜一下');
+				}
+            }
+        })
+    };	
+</script>
+	<script type="text/javascript">
+	//var screenheigt = document.body.clientHeight - 100;
+	//document.getElementById("searchbox").setAttribute("style","background-image: url('images/bg_4.jpg');background-position: center bottom;background-attachment: fixed;background-size: cover;width: 100%;padding: 0;margin: 0;border: none;height: " + screenheigt + "px;");</script>	
+</div></div>
