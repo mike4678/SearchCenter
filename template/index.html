@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" id='webpage'>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -25,7 +25,7 @@
 </head>
 
 <body>
-<div class="main-menu">
+<div class="main-menu" style="display:none">
 	<header class="header">
 		<a href="index.php" class="logo"><i class="ico mdi mdi-cube-outline"></i>{corp}</a>
 		<div class="user">
@@ -42,13 +42,13 @@
 		</div>
 	</div>
 </div>
-<div class="fixed-navbar">
-	<div class="pull-left">
+<div class="fixed-navbar" style="position:static;background-color:#fff">
+	<div class="pull-left" style="display:none">
 		<button type="button" class="menu-mobile-button glyphicon glyphicon-menu-hamburger js__menu_mobile"></button>
 	</div>
 	<div class="pull-right">
 			<div class="ico-item">
-			<a href="#" class="ico-item mdi mdi-help-circle-outline js__toggle_open" data-target="#searchform-header" onclick="javascript:SystemBox(2, 'template/about.php',null,'关于',300,700)" title="About"></a>
+			<a href="#" class="ico-item mdi mdi-help-circle-outline js__toggle_open" data-target="#searchform-header" onclick="javascript:SystemBox(2, 'template/about.php',null,'关于',300,700)" title="About">帮助</a>
 		</div>
 	</div>
 	
@@ -56,6 +56,5 @@
 <div id="wrapper">
 	<div class="main-content">
 	{page_data}
-	</div>
-</div>
+
 

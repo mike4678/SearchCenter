@@ -21,10 +21,10 @@ require("../kernl/Init.php"); //初始化基础参数
     	<div class="box-content">
               <table class="table">
                     <tr><td width="110" align="right">开发：</td><td>Source</td><td align="right">官网：</td><td><a href="http://bbs.csource.com.cn" target="_blank">点击访问</a></td></tr>
-                    <tr><td align="right">可查询数：</td><td>Mac Address：<?php echo $dou -> GetSearchCount('zd_mac_addr');  ?><br>Process：<?php echo $dou -> GetSearchCount('zd_process_list');  ?><br>FileType：<?php echo $dou -> GetSearchCount('zd_filetypetable');  ?></td><td align="right">更新时间：</td><td>2020-01-23</td></tr>
+                    <tr><td align="right">可查询数：</td><td>Mac Address：<?php echo $dou -> GetSearchCount('zd_mac_addr');  ?><br>Process：<?php echo $dou -> GetSearchCount('zd_process_list');  ?><br>FileType：<?php echo $dou -> GetSearchCount('zd_filetypetable');  ?></td><td align="right">更新时间：</td><td>2022-08-24</td></tr>
                     <tr><td align="right">IP库版本：</td><td><?php echo $dou -> Get_IPVersion(); ?></td><td align="right">更新时间：</td><td><?php echo $dou -> Get_IPVersion(); ?></td></tr>					
 					<tr><td align="right">系统版本：</td><td>V1.0</td><td align="right">错误提交：</td><td><a href="http://bbs.csource.com.cn" target="_blank">点击提交</a></td></tr>
-					<tr><td align="right">源码下载：</td><td><a href="http://tool.csource.com.cn/QueryMAC.zip" target="_blank">点击下载</a>(<a href="https://github.com/mike4678/MacQuery" target="_blank">GitHub</a>)</td><td align="right">客户端下载：</td><td><a href="http://tool.csource.com.cn/QueryClient.zip" target="_blank">点击下载</a></td></tr>
+					<tr><td align="right">源码下载：</td><td><a href="http://tool.csource.com.cn/QueryMAC.zip" target="_blank">点击下载</a>(<a href="https://github.com/mike4678/SearchCenter" target="_blank">GitHub</a>)(<a href="https://gitee.com/marcocat/SearchCenter" target="_blank">Gitee</a>)</td><td align="right">客户端下载：</td><td><a href="http://tool.csource.com.cn/QueryClient.zip" target="_blank">点击下载</a></td></tr>
                 </table>
             </div>
         </div>

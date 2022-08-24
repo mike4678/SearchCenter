@@ -22,6 +22,10 @@ while ($tlist <= count($out[1]) - 1)
 		case 'table_name':
 			$HeadData = $list;
 			break;
+		
+		case 'background':
+			$HeadData = $dou -> LoadingBingBackground(); 
+			break;
 			
 		default:
 			$HeadData = $dou -> Info($out[1][$tlist]);
