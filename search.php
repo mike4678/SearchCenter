@@ -6,7 +6,7 @@ ob_clean();
 $dou -> CheckServerState();//网站状态检查
 $searchdata = empty($_POST['searchdata']) ? '' : $_POST['searchdata'];  // 搜索内容
 $type = empty($_POST['searchfs']) ? '' : $_POST['searchfs'];  // 搜索方式
-
+setcookie("SearchData", $searchdata, time() + 3600, "/", $_SERVER['SERVER_NAME'], isset($_SERVER["HTTP"]), true);
 switch($type)
 {
 	case 'mac':
@@ -95,6 +95,22 @@ switch($type)
 	case 'hz':
 		$sql = 'select * from zd_filetypetable where filetype LIKE "%'.$searchdata.'%"';
 		//print_r($sql);
+		$result = $dou->query($sql); 
+		$Data = array();
+		while ($row =$dou->fetch_array($result))
+		{		
+			$count=count($row);//不能在循环语句中，由于每次删除 row数组长度都减小  
+			for($i=0;$i<$count;$i++)
+			{  
+				unset($row[$i]);//删除冗余数据  
+			}
+			array_push($Data,$row);
+		}
+		echo json_encode(array('status'=>'4','message'=>'Success','count'=>$dou->num_rows($result),'Data'=>$Data));
+		break;
+		
+	case 'hz_binary':
+		$sql = 'select * from zd_filetypetable where binarydata LIKE "%'.$searchdata.'%"';
 		$result = $dou->query($sql); 
 		$Data = array();
 		while ($row =$dou->fetch_array($result))

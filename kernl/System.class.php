@@ -1283,7 +1283,7 @@ class System extends DbMysql
 		/* ---------------------------------------------------- */	
 		function LoadingBingBackground()
 		{
-			$path = "../images/bing/" . date("Ym");
+			$path = "images/bing/" . date("Ym");
 			if (!file_exists($path)) 
 			{
 				mkdir($path, 0777);
@@ -1299,7 +1299,7 @@ class System extends DbMysql
 				}
 			}
 			
-			return '<style>body.login{ background:url(' . $pathurl . ');}</style>';
+			return '<style>body{ background:url(' . $imgurl . ');}</style>';
 		}
 		
 		/* ---------------------------------------------------- */	

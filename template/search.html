@@ -119,8 +119,31 @@ function Search() {
 					break;
 					
 					case '3':
-						SystemBox(2, 'template/process/list.php',null,'请选择需要查询的进程名',300,500);
+						SystemBox(2, 'template/list.php?type=process',null,'请选择需要查询的进程名',300,500);
 						$('#button').attr("value", '搜一下')	
+					break;
+					
+					case '4':
+						if(res.count == 0)
+						{
+							SystemBox(3, '搜索结果为空！');
+							return false
+						} else if (res.count == 1)
+						{
+							$("#FileName").text(" 查询后缀名：" + res.Data[0].filetype)
+							$("#FilePath").text(" 文件头：" + res.Data[0].binarydata)
+							$("#Compy").text(" 执行方式：" + res.Data[0].Open)
+							$("#Level").text(" 描   述：" + res.Data[0].title)
+							$("#Other").text("")
+							$('#glass1').attr("style", 'margin:0 auto;border:0px solid #000;width:400px;height:200px;display:block');
+							$('#glassblack').attr("style", 'display:none');
+							$('#glass').attr("style", 'display:none');						
+							$('#button').attr("value", '搜一下')							
+						} else {
+							SystemBox(2, 'template/list.php?type=hz',null,'请选择需要查询的后缀名',300,500);
+							$('#button').attr("value", '搜一下')							
+						}
+
 					break;
 					
 					default:
