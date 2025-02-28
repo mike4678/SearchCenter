@@ -12,7 +12,7 @@
 /* ---------------------------------------------------- */
 //error_reporting(0);
 
-class DbMysql {
+class Db {
     private $DBSERVER; // 数据库主机
     private $USER; // 数据库用户名
     private $PASSWORD; // 数据库用户名密码
@@ -25,7 +25,7 @@ class DbMysql {
     private $error_msg; // 数据库错误提示
                         
     // 构造函数
-    function DbMysql($DBSERVER, $USER, $PASSWORD, $DB = '', $charset = 'utf8') {
+    function __construct ($DBSERVER, $USER, $PASSWORD, $DB = '', $charset = 'utf8') {
         $this->DBSERVER = $DBSERVER;
         $this->USER = $USER;
         $this->PASSWORD = $PASSWORD;

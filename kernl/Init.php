@@ -1,5 +1,5 @@
 <?PHP
-error_reporting(0);
+//error_reporting(0);
 
 // 调整时区
 if (PHP_VERSION >= '5.1') 
@@ -51,12 +51,17 @@ if(file_exists(strtolower($file)) != TRUE)  //如果不存在则跳转到安装�
 	}
 
 //初始化核心模块
-$arr = array('Connect','FileUtil','System','Account','Mobile','ip');
+$arr = array('Connect','FileUtil','System','Mobile');
 for ($i = 0 ; $i < count($arr); $i++)
 {
 	require($arr[$i].'.Class.php');
 }
+//初始化IP库
 
+require_once __DIR__ . '/vendor/autoload.php';
+use Czdb\DbSearcher;
+$dbSearcherv4 = new DbSearcher(__DIR__ . '/cz88_public_v4.czdb', "BTREE", "bh3E6Q02n8TOZVxR8sd1Zw==");
+$dbSearcherv6 = new DbSearcher(__DIR__ . '/cz88_public_v6.czdb', "BTREE", "bh3E6Q02n8TOZVxR8sd1Zw==");
 //Debug
 if (Debug == "on") 
 {
@@ -71,6 +76,7 @@ if (Debug == "on")
 
 // 实例化类
 $dou = new System(DBSERVER, USER, PASSWORD, DB, 'utf8');
+//$SafeDou = new PDO("mysql:host=DBSERVER;dbname=DB", USER, PASSWORD);
 $FileControl = new FileUtil();
 
 //校验基础表数据是否存在
@@ -96,7 +102,7 @@ while($row = $dou->fetch_array($result))
 	} 
 
 }
-define('source', 'service.csource.com.cn');
+define('source', 'search.csource.com.cn');
 define('key', $dou->Info('encrypted')); //初始化加密key
 
 //结束php部分初始化，初始化页面顶部信息

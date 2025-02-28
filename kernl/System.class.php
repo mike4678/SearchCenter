@@ -11,7 +11,7 @@
 /* 2.禁止任何衍生版本.
 /* ---------------------------------------------------- */
 
-class System extends DbMysql 
+class System extends Db 
 {
 	//系统设置表信息
 	/* ---------------------------------------------------- */
@@ -36,7 +36,7 @@ class System extends DbMysql
 		$query = $this->select_all('zd_config');
 		$row = $this->fetch_array($query);
 		return( $row[$data]);
-		break;
+		//break;
 		}
 	/* ---------------------------------------------------- */
 		
@@ -47,7 +47,7 @@ class System extends DbMysql
 		$row = $this->fetch_array($query);
 		//print_r($row );
 		return( $row[$various]);
-		break;
+		//break;
 		}
 	/* ---------------------------------------------------- */
 	
@@ -1343,6 +1343,7 @@ class System extends DbMysql
 		}
 		
 		/* ---------------------------------------------------- */			
+
 }		
 ?>
 
