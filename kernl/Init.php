@@ -60,8 +60,8 @@ for ($i = 0 ; $i < count($arr); $i++)
 
 require_once __DIR__ . '/vendor/autoload.php';
 use Czdb\DbSearcher;
-$dbSearcherv4 = new DbSearcher(__DIR__ . '/cz88_public_v4.czdb', "BTREE", "bh3E6Q02n8TOZVxR8sd1Zw==");
-$dbSearcherv6 = new DbSearcher(__DIR__ . '/cz88_public_v6.czdb', "BTREE", "bh3E6Q02n8TOZVxR8sd1Zw==");
+$dbSearcherv4 = new DbSearcher(__DIR__ . '/cz88_public_v4.czdb', "BTREE", "cz88_key,请自行到cz88申请");
+$dbSearcherv6 = new DbSearcher(__DIR__ . '/cz88_public_v6.czdb', "BTREE", "cz88_key,请自行到cz88申请");
 //Debug
 if (Debug == "on") 
 {
