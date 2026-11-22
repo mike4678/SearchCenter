@@ -1,166 +1,212 @@
 <?php
-
-///Í¨ÓÃÑéÖ¤ÂëÀà
+/**
+ * é€šç”¨éªŒè¯ç ç±»
+ * - ä¼˜å…ˆä½¿ç”¨ TTF å­—ä½“ï¼ˆä¸æœ¬ç±»åŒç›®å½•çš„ font.ttfï¼‰
+ * - å­—ä½“æ–‡ä»¶ç¼ºå¤±æ—¶è‡ªåŠ¨é™çº§ä¸º GD å†…ç½®å­—ä½“ï¼Œä¿è¯éªŒè¯ç å§‹ç»ˆèƒ½æ˜¾ç¤º
+ */
 class Utils_Caption
 {
-	var $Width      = 60;           //Í¼Æ¬¿í
-	var $Height     = 60;           //Í¼Æ¬¸ß
-	var $Length     = 4;            //ÑéÖ¤ÂëÎ»Êı
-	var $BgColor    = "#FFFFFF";    //±³¾°É«
+    var $Width      = 60;           // å›¾ç‰‡å®½
+    var $Height     = 60;           // å›¾ç‰‡é«˜
+    var $Length     = 4;            // éªŒè¯ç ä½æ•°
+    var $BgColor    = "#FFFFFF";    // èƒŒæ™¯è‰²
 
-	var $TFonts = array("font.ttf");
-	var $TFontSize=array(17,20); //×ÖÌå´óĞ¡·¶Î§
-	var $TFontAngle=array(-20,20); //Ğı×ª½Ç¶È
+    var $TFonts     = array("font.ttf");
+    var $TFontSize  = array(17, 20); // å­—ä½“å¤§å°èŒƒå›´
+    var $TFontAngle = array(-20, 20); // æ—‹è½¬è§’åº¦
 
-	var $Chars   = "0123456789";         //ÑéÖ¤Âë·¶Î§£¨×ÖÄ¸Êı×Ö£©
+    var $Chars      = "0123456789";  // éªŒè¯ç èŒƒå›´ï¼ˆå­—æ¯æˆ–æ•°å­—ï¼‰
 
-	var $Code    = array();              //ÑéÖ¤Âë
-	var $Image   = "";              //Í¼ĞÎ¶ÔÏó
-	var $FontColors=array('#f36161','#6bc146','#5368bd');  //×ÖÌåÑÕÉ«,ºìÂÌÀ¶
-	var $TPadden = 0.75;///×Ö·û¼ä¾à
-	var $Txbase = 5;///xÖáÁ½±ß¾àÀë
-	var $Tybase =5 ;///yÖáÁ½±ß¾àÀë
-	var $TLine =true; ///»­¸ÉÈÅÏß
+    var $Code       = array();       // éªŒè¯ç 
+    var $Image      = "";            // å›¾å½¢å¯¹è±¡
+    var $FontColors = array('#f36161', '#6bc146', '#5368bd'); // å­—ä½“é¢œè‰²
+    var $TPadden    = 0.75;          // å­—é—´è¡¥ä¸
+    var $Txbase     = 5;             // x è½´å·¦è¾¹è·
+    var $Tybase     = 5;             // y è½´å·¦è¾¹è·
+    var $TLine      = true;          // å¹²æ‰°çº¿
 
+    /** å–å¯ç”¨å­—ä½“æ–‡ä»¶è·¯å¾„ï¼Œæ‰¾ä¸åˆ°è¿”å›ç©ºä¸² */
+    private function _fontFile()
+    {
+        foreach ((array)$this->TFonts as $name) {
+            $path = dirname(__FILE__) . DIRECTORY_SEPARATOR . $name;
+            if ($name !== '' && is_file($path) && is_readable($path)) {
+                return $path;
+            }
+        }
+        return '';
+    }
 
-	public  function RandRSI() ///Éú³ÉÑéÖ¤Âë
-	{
-		$this->TFontAngle=range($this->TFontAngle[0],$this->TFontAngle[1]);
-		$this->TFontSize=range($this->TFontSize[0],$this->TFontSize[1]);
+    public function RandRSI() // ç”ŸæˆéªŒè¯ç 
+    {
+        $this->TFontAngle = range($this->TFontAngle[0], $this->TFontAngle[1]);
+        $this->TFontSize  = range($this->TFontSize[0], $this->TFontSize[1]);
 
-		$arr=array();
-		$Chars=$this->Chars;
-		$TFontAngle=$this->TFontAngle;
-		$TFontSize=$this->TFontSize;
-		$FontColors=$this->FontColors;
-		$code="";
-		$font=dirname(__FILE__)."/".$this->TFonts[0];
+        $arr        = array();
+        $Chars      = $this->Chars;
+        $FontColors = $this->FontColors;
+        $code       = '';
+        $font       = $this->_fontFile();
 
-		$charlen=strlen($Chars)-1;
-		$anglelen=count($TFontAngle)-1; // ½Ç¶È·¶Î§
-		$fontsizelen=count($TFontSize)-1; // ½Ç¶È·¶Î§
-		$fontcolorlen=count($FontColors)-1; // ½Ç¶È·¶Î§
+        $charlen      = strlen($Chars) - 1;
+        $anglelen     = count($this->TFontAngle) - 1;
+        $fontsizelen  = count($this->TFontSize) - 1;
+        $fontcolorlen = count($FontColors) - 1;
 
-		for($i=0;$i<$this->Length;$i++) ///µÃµ½×Ö·ûÓëÑÕÉ«
-		{
-			$char=$Chars[rand(0,$charlen)]; ///µÃµ½×Ö·û
-			$angle=$TFontAngle[rand(0,$anglelen)]; ///Ğı×ª½Ç¶È
-			$fontsize=$TFontSize[rand(0,$fontsizelen)]; ///×ÖÌå´óĞ¡
-			$fontcolor=$FontColors[rand(0,$fontcolorlen)]; ///×ÖÌå´óĞ¡
+        for ($i = 0; $i < $this->Length; $i++) {
+            $char      = $Chars[rand(0, $charlen)];
+            $angle     = $this->TFontAngle[rand(0, $anglelen)];
+            $fontsize  = $this->TFontSize[rand(0, $fontsizelen)];
+            $fontcolor = $FontColors[rand(0, $fontcolorlen)];
 
-			$bound=$this->_calculateTextBox($fontsize,$angle,$font,$char); ///µÃµ½·¶Î§
+            if ($font === '') {
+                // æ— å­—ä½“æ–‡ä»¶ï¼šç”¨ GD å†…ç½®å­—ä½“ä¼°ç®—è¾¹ç•Œ
+                $bound = array(
+                    'left'   => 0,
+                    'top'    => 0,
+                    'width'  => imagefontwidth(5),
+                    'height' => imagefontheight(5),
+                    'box'    => array(),
+                    'builtin' => true,
+                );
+            } else {
+                $bound = $this->_calculateTextBox($fontsize, $angle, $font, $char);
+                $bound['builtin'] = false;
+            }
 
-			$arr[]=array($fontsize,$angle,$fontcolor,$char,$font,$bound);  ///µÃµ½¾ØĞÎ¿ò
-			$code.=$char;
-		}
-		$this->Code=$arr; //ÑéÖ¤Âë
-		return $code;
-	}
+            $arr[] = array($fontsize, $angle, $fontcolor, $char, $font, $bound);
+            $code .= $char;
+        }
+        $this->Code = $arr;
+        return $code;
+    }
 
-	public function Draw() ///»­Í¼
-	{
-		if(empty($this->Code)) $this->RandRSI();
-		$codes=$this->Code; ///ÓÃ»§ÑéÖ¤Âë
+    public function Draw() // ç”»å›¾
+    {
+        if (empty($this->Code)) {
+            $this->RandRSI();
+        }
+        $codes = $this->Code;
 
+        $wh     = $this->_getImageWH($codes);
+        $width  = $wh[0];
+        $height = $wh[1];
 
-		$wh=$this->_getImageWH($codes);
+        $this->Width  = $width;
+        $this->Height = $height;
 
-		$width=$wh[0];
-		$height=$wh[1]; ///¸ß¶È
+        $this->Image = imageCreate($width, $height);
+        $image       = $this->Image;
 
-		$this->Width=$width;
-		$this->Height=$height;
+        $back = $this->_getColor2($this->_getColor($this->BgColor));
+        imageFilledRectangle($image, 0, 0, $width, $height, $back);
 
-		$this->Image = imageCreate( $width, $height );
-		$image=$this->Image;
+        $TPadden = $this->TPadden;
+        $basex   = $this->Txbase;
+        $color   = null;
 
-		$back = $this->_getColor2($this->_getColor( $this->BgColor)); ///±³¾°ÑÕÉ«
-		imageFilledRectangle($image, 0, 0, $width, $height, $back); ///Ìî³ä±³¾°
+        foreach ($codes as $v) {
+            $bound = $v[5];
+            $color = $this->_getColor2($this->_getColor($v[2]));
+            if (!empty($bound['builtin']) || $v[4] === '') {
+                // å†…ç½®å­—ä½“ç»˜åˆ¶ï¼ˆæ—  TTF æ—¶å…œåº•ï¼‰
+                $fy = $this->Tybase + 2;
+                $fh = imagefontheight(5);
+                if ($fy + $fh > $height - 1) {
+                    $fy = max(1, $height - 1 - $fh);
+                }
+                imagestring($image, 5, $basex, $fy, $v[3], $color);
+                $basex = $basex + $bound['width'] + 3;
+                continue;
+            }
+            imagettftext($image, $v[0], $v[1], $basex, $bound['height'], $color, $v[4], $v[3]);
+            $basex = $basex + $bound['width'] * $TPadden - $bound['left'];
+        }
 
-		$TPadden=$this->TPadden;
+        if ($this->TLine) {
+            $this->_wirteSinLine($color, $basex);
+        }
 
-		$basex=$this->Txbase;
-		$color=null;
-		foreach ($codes as $v) ///Öğ¸ö»­×Ö·û
-		{
-			$bound=$v[5];
-			$color=$this->_getColor2($this->_getColor($v[2]));
-			imagettftext($image, $v[0], $v[1], $basex, $bound['height'],$color , $v[4], $v[3]);
-			$basex=$basex+$bound['width']*$TPadden-$bound['left'];///¼ÆËãÏÂÒ»¸ö×ó±ß¾à
-		}
-		$this->TLine?$this->_wirteSinLine($color,$basex):null; ///»­¸ÉÈÅÏß
-		header("Content-type: image/png");
-		imagepng( $image);
-		imagedestroy($image);
+        if (!headers_sent()) {
+            header("Content-Type: image/png");
+            header("Cache-Control: no-cache, must-revalidate, max-age=0");
+            header("Pragma: no-cache");
+        }
+        imagepng($image);
+        imagedestroy($image);
+    }
 
-	}
+    /**
+     * é€šè¿‡å­—ä½“è§’åº¦å¾—åˆ°æœ€å°å¤–æ¥çŸ©å½¢
+     */
+    private function _calculateTextBox($font_size, $font_angle, $font_file, $text)
+    {
+        $box = @imagettfbbox($font_size, $font_angle, $font_file, $text);
+        if (!is_array($box) || count($box) < 8) {
+            return array(
+                'left'   => 0,
+                'top'    => 0,
+                'width'  => imagefontwidth(5) * max(1, strlen($text)),
+                'height' => imagefontheight(5),
+                'box'    => array(),
+                'builtin' => true,
+            );
+        }
 
-	/**
-	 *Í¨¹ı×ÖÌå½Ç¶ÈµÃµ½×ÖÌå¾ØĞÎ¿í¶È*
-	 *
-	 * @param int $font_size ×ÖÌå³ß´ç
-	 * @param float $font_angle Ğı×ª½Ç¶È
-	 * @param string $font_file ×ÖÌåÎÄ¼şÂ·¾¶
-	 * @param string $text Ğ´Èë×Ö·û
-	 * @return array ·µ»Ø³¤¿í¸ß
-	 */
-	private function _calculateTextBox($font_size, $font_angle, $font_file, $text) {
-		$box = imagettfbbox($font_size, $font_angle, $font_file, $text);
+        $min_x = min(array($box[0], $box[2], $box[4], $box[6]));
+        $max_x = max(array($box[0], $box[2], $box[4], $box[6]));
+        $min_y = min(array($box[1], $box[3], $box[5], $box[7]));
+        $max_y = max(array($box[1], $box[3], $box[5], $box[7]));
 
-		$min_x = min(array($box[0], $box[2], $box[4], $box[6]));
-		$max_x = max(array($box[0], $box[2], $box[4], $box[6]));
-		$min_y = min(array($box[1], $box[3], $box[5], $box[7]));
-		$max_y = max(array($box[1], $box[3], $box[5], $box[7]));
+        return array(
+            'left'   => ($min_x >= -1) ? -abs($min_x + 1) : abs($min_x + 2),
+            'top'    => abs($min_y),
+            'width'  => $max_x - $min_x,
+            'height' => $max_y - $min_y,
+            'box'    => $box,
+            'builtin' => false,
+        );
+    }
 
-		return array(
-		'left' => ($min_x >= -1) ? -abs($min_x + 1) : abs($min_x + 2),
-		'top' => abs($min_y),
-		'width' => $max_x - $min_x,
-		'height' => $max_y - $min_y,
-		'box' => $box
-		);
-	}
+    private function _getColor($color) // #ffffff
+    {
+        return array(hexdec($color[1] . $color[2]), hexdec($color[3] . $color[4]), hexdec($color[5] . $color[6]));
+    }
 
-	private function  _getColor( $color ) //#ffffff
-	{
-		return array(hexdec($color[1].$color[2]),hexdec($color[3].$color[4]),hexdec($color[5].$color[6]));
-	}
+    private function _getColor2($color) // #ffffff
+    {
+        return imagecolorallocate($this->Image, $color[0], $color[1], $color[2]);
+    }
 
-	private function  _getColor2( $color ) //#ffffff
-	{
-		return imagecolorallocate ($this->Image, $color[0], $color[1], $color[2]);
-	}
+    private function _getImageWH($data)
+    {
+        $TPadden = $this->TPadden;
+        $w = $this->Txbase;
+        $h = 0;
+        foreach ($data as $v) {
+            $w = $w + $v[5]['width'] * $TPadden - $v[5]['left'];
+            $h = $h > $v[5]['height'] ? $h : $v[5]['height'];
+        }
+        return array(max($w, $this->Width), max($h, $this->Height));
+    }
 
-	private function _getImageWH($data)
-	{
-		$TPadden=$this->TPadden;
-		$w=$this->Txbase;
-		$h=0;
-		foreach ($data as $v)
-		{
-			$w=$w+$v[5]['width']*$TPadden-$v[5]['left'];
-			$h=$h>$v[5]['height']?$h:$v[5]['height'];
-		}
-		return array(max($w,$this->Width),max($h,$this->Height));
-	}
+    // ç”»æ­£å¼¦å¹²æ‰°çº¿
+    private function _wirteSinLine($color, $w)
+    {
+        $img = $this->Image;
 
-	//»­ÕıÏÒ¸ÉÈÅÏß
-	private function _wirteSinLine($color,$w)
-	{
-		$img=$this->Image;
+        $h  = $this->Height;
+        $h1 = rand(-5, 5);
+        $h2 = rand(-1, 1);
+        $w2 = rand(10, 15);
+        $h3 = rand(4, 6);
 
-		$h=$this->Height;
-		$h1=rand(-5,5);
-		$h2=rand(-1,1);
-		$w2=rand(10,15);
-		$h3=rand(4,6);
-
-		for($i=-$w/2;$i<$w/2;$i=$i+0.1)
-		{
-			$y=$h/$h3*sin($i/$w2)+$h/2+$h1;
-			imagesetpixel($img,$i+$w/2,$y,$color);
-			$h2!=0?imagesetpixel($img,$i+$w/2,$y+$h2,$color):null;
-		}
-	}
+        for ($i = -$w / 2; $i < $w / 2; $i = $i + 0.1) {
+            $y = $h / $h3 * sin($i / $w2) + $h / 2 + $h1;
+            imagesetpixel($img, (int)($i + $w / 2), (int)$y, $color);
+            if ($h2 != 0) {
+                imagesetpixel($img, (int)($i + $w / 2), (int)($y + $h2), $color);
+            }
+        }
+    }
 }
-
